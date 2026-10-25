@@ -35,8 +35,8 @@ Based on [MARIN_CORE](https://github.com/RomdhoniZidane20/MARIN_CORE) — miniat
 | Feature | MARIN_CORE | Microduck Board (target) |
 | :--- | :--- | :--- |
 | RS485 buses | 4 buses | 3 buses (right leg, left leg, head/neck) |
-| USB-to-serial | FT4232H | FT4232H or FT232H (single channel, smaller) |
-| RS485 transceiver | ADM3078E | ADM3078E (keep, same chip) |
+| USB-to-serial | FT4232H | FT232H (single channel, smaller) |
+| RS485 transceiver | ADM3078E | MAX485 (simpler, cheaper) |
 | IMU | BNO055 | BNO08x (matches walking model) |
 | MCU co-processor | ESP32 | Optional — remove if not needed |
 | Power switch | Hot swap for Intel NUC | Simplified — 6V servo power switch only |
@@ -53,13 +53,14 @@ The MARIN_CORE V4 design files (Eagle `.sch` / `.brd`) are the starting point:
 
 - Remove hot-swap power management (not needed for small robot)
 - Remove load cell interface
-- Reduce to 3 RS485 buses (from 4)
-- Add 40-pin GPIO header or JST connector for Raspberry Pi 4 connection
+- Single TTL bus (from 4 RS485 buses)
+- Replace ADM3078E with MAX485 (simpler, cheaper, easier to source)
+- Add USB connector for Raspberry Pi 4 connection
 - Reduce PCB size to fit Microduck chassis
 
 ### Interface to Raspberry Pi 4
 
-The custom board connects to Raspberry Pi 4 via USB (FT4232H enumerates as `/dev/serial/by-id/usb-FTDI_*`). The deployment code will auto-detect it, same as OpenRB-150.
+The custom board connects to Raspberry Pi 4 via USB (FT232H enumerates as `/dev/serial/by-id/usb-FTDI_*`). The deployment code will auto-detect it, same as OpenRB-150.
 
 ---
 
@@ -103,12 +104,9 @@ flowchart TD
     SW[Power Switch]
     REG[5V Regulator]
     RPI[Raspberry Pi 4]
-    BOARD[Custom USB-TTL Board\nFT4232H + ADM3078E]
+    BOARD[Custom USB-TTL Board\nFT232H + MAX485]
     IMU[BNO08x IMU Module]
-    SPLIT[Servo Splitter]
-    RL[Right Leg Chain\nID 5→4→3→2→1]
-    LL[Left Leg Chain\nID 10→9→8→7→6]
-    HN[Head/Neck Chain\nID 12→11→13→14]
+    CHAIN[Single Servo Bus\nID 1→2→3→...→14]
 
     BAT --> SW
     SW --> BOARD
@@ -116,10 +114,7 @@ flowchart TD
     REG -->|5V USB-C| RPI
     RPI <-->|USB Data| BOARD
     RPI <-->|I2C SDA/SCL GPIO2/3| IMU
-    BOARD --> SPLIT
-    SPLIT --> RL
-    SPLIT --> LL
-    SPLIT --> HN
+    BOARD --> CHAIN
 ```
 
 **Pros:** Simple, fewer components, direct I2C on Pi GPIO  
@@ -135,13 +130,10 @@ flowchart TD
     SW[Power Switch]
     REG[5V Regulator]
     RPI[Raspberry Pi 4]
-    BOARD[Custom USB-TTL Board\nFT4232H + ADM3078E]
+    BOARD[Custom USB-TTL Board\nFT232H + MAX485]
     MCU[Microcontroller\neg. STM32 / Arduino]
     IMU[BNO08x IMU Module]
-    SPLIT[Servo Splitter]
-    RL[Right Leg Chain\nID 5→4→3→2→1]
-    LL[Left Leg Chain\nID 10→9→8→7→6]
-    HN[Head/Neck Chain\nID 12→11→13→14]
+    CHAIN[Single Servo Bus\nID 1→2→3→...→14]
 
     BAT --> SW
     SW --> BOARD
@@ -150,10 +142,7 @@ flowchart TD
     RPI <-->|USB Data - Servo| BOARD
     RPI <-->|USB Data - IMU| MCU
     MCU <-->|I2C| IMU
-    BOARD --> SPLIT
-    SPLIT --> RL
-    SPLIT --> LL
-    SPLIT --> HN
+    BOARD --> CHAIN
 ```
 
 **Pros:** MCU handles IMU polling independently, cleaner separation, easier to expand sensors later  
@@ -174,13 +163,11 @@ Raspberry Pi 4 GPIO Header
 └─────────────────────────┘
 ```
 
-### Servo Bus (3-pin daisy chain)
+### Servo Bus (single TTL daisy chain)
 
 ```
-Custom USB-TTL Board
-    ├── Bus 1 — Right leg chain : ID 5 → 4 → 3 → 2 → 1
-    ├── Bus 2 — Left leg chain  : ID 10 → 9 → 8 → 7 → 6
-    └── Bus 3 — Head/neck chain : ID 12 → 11 → 13 → 14
+Custom USB-TTL Board (FT232H + MAX485)
+    └── Single Bus : ID 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 → 9 → 10 → 11 → 12 → 13 → 14
 ```
 
 ### Wiring Checklist
@@ -298,7 +285,7 @@ make sync
 | :--- | :--- |
 | `microduck.local` not found | Wait 1–3 min on first boot; confirm 2.4GHz Wi-Fi; check router DHCP for Pi IP |
 | SSH host key changed | Run `ssh-keygen -R microduck.local` then reconnect |
-| Custom board not detected | Check `lsusb` for FT4232H; verify USB cable is data-capable; check udev rules |
+| Custom board not detected | Check `lsusb` for FT232H; verify USB cable is data-capable; check udev rules |
 | Servos not moving | Check battery voltage, servo IDs, baud rate (1Mbps), board USB detection |
 | Robot falls immediately | Verify left/right leg IDs not swapped, IMU orientation, correct `walk.onnx` |
 | SSH drops when gamepad connects | Expected — headless mode disables Wi-Fi for Bluetooth stability; turn off gamepad to restore Wi-Fi |
