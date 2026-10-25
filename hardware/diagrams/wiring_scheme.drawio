@@ -4,7 +4,7 @@
     <mxCell id="1" parent="0" />
 
     <!-- ==================== PAGE TITLE ==================== -->
-    <mxCell id="title" value="Microduck Wiring Scheme — Raspberry Pi 4 + Custom USB-TTL Board" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=16;fontStyle=1;" vertex="1" parent="1">
+    <mxCell id="title" value="Microduck Wiring Scheme — Raspberry Pi 4 + Custom USB-TTL Board (FT232H)" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=16;fontStyle=1;" vertex="1" parent="1">
       <mxGeometry x="400" y="20" width="800" height="40" as="geometry" />
     </mxCell>
 
@@ -39,7 +39,7 @@
     </mxCell>
 
     <!-- ==================== CUSTOM TTL BOARD ==================== -->
-    <mxCell id="boardA" value="Custom USB-TTL Board&#xa;FT4232H + ADM3078E&#xa;(3x RS485 Bus)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;fontStyle=1;arcSize=10;" vertex="1" parent="1">
+    <mxCell id="boardA" value="Custom USB-TTL Board&#xa;FT232H + ADM3078E&#xa;(Single TTL Bus)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;fontStyle=1;arcSize=10;" vertex="1" parent="1">
       <mxGeometry x="280" y="390" width="200" height="70" as="geometry" />
     </mxCell>
 
@@ -48,20 +48,9 @@
       <mxGeometry x="60" y="660" width="160" height="60" as="geometry" />
     </mxCell>
 
-    <!-- ==================== SERVO SPLITTER A ==================== -->
-    <mxCell id="splitA" value="Servo Splitter" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=12;arcSize=10;" vertex="1" parent="1">
-      <mxGeometry x="300" y="530" width="160" height="50" as="geometry" />
-    </mxCell>
-
-    <!-- ==================== SERVO CHAINS A ==================== -->
-    <mxCell id="rlA" value="Right Leg Chain&#xa;ID 5→4→3→2→1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;arcSize=10;" vertex="1" parent="1">
-      <mxGeometry x="180" y="660" width="160" height="50" as="geometry" />
-    </mxCell>
-    <mxCell id="llA" value="Left Leg Chain&#xa;ID 10→9→8→7→6" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;arcSize=10;" vertex="1" parent="1">
-      <mxGeometry x="360" y="660" width="160" height="50" as="geometry" />
-    </mxCell>
-    <mxCell id="hnA" value="Head/Neck Chain&#xa;ID 12→11→13→14" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;arcSize=10;" vertex="1" parent="1">
-      <mxGeometry x="540" y="660" width="160" height="50" as="geometry" />
+    <!-- ==================== SERVO CHAIN A (single bus) ==================== -->
+    <mxCell id="chainA" value="Single Servo Bus&#xa;ID 1→2→3→...→14&#xa;(All servos daisy-chained)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;arcSize=10;" vertex="1" parent="1">
+      <mxGeometry x="260" y="540" width="200" height="60" as="geometry" />
     </mxCell>
 
     <!-- ==================== ARROWS OPTION A ==================== -->
@@ -89,18 +78,8 @@
     <mxCell id="e6" value="I2C&#xa;GPIO2/3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#9673a6;strokeWidth=2;endArrow=block;startArrow=block;startFill=1;endFill=1;" edge="1" source="rpiA" target="imuA" parent="1">
       <mxGeometry relative="1" as="geometry" />
     </mxCell>
-    <!-- TTL Board to Splitter -->
-    <mxCell id="e7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#6c8ebf;strokeWidth=2;" edge="1" source="boardA" target="splitA" parent="1">
-      <mxGeometry relative="1" as="geometry" />
-    </mxCell>
-    <!-- Splitter to Servo Chains -->
-    <mxCell id="e8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#b85450;strokeWidth=2;" edge="1" source="splitA" target="rlA" parent="1">
-      <mxGeometry relative="1" as="geometry" />
-    </mxCell>
-    <mxCell id="e9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#b85450;strokeWidth=2;" edge="1" source="splitA" target="llA" parent="1">
-      <mxGeometry relative="1" as="geometry" />
-    </mxCell>
-    <mxCell id="e10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#b85450;strokeWidth=2;" edge="1" source="splitA" target="hnA" parent="1">
+    <!-- TTL Board to Single Servo Chain -->
+    <mxCell id="e7" value="TTL Single Bus" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#b85450;strokeWidth=2;" edge="1" source="boardA" target="chainA" parent="1">
       <mxGeometry relative="1" as="geometry" />
     </mxCell>
 
@@ -126,7 +105,7 @@
     </mxCell>
 
     <!-- TTL Board B -->
-    <mxCell id="boardB" value="Custom USB-TTL Board&#xa;FT4232H + ADM3078E&#xa;(3x RS485 Bus)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;fontStyle=1;arcSize=10;" vertex="1" parent="1">
+    <mxCell id="boardB" value="Custom USB-TTL Board&#xa;FT232H + ADM3078E&#xa;(Single TTL Bus)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;fontStyle=1;arcSize=10;" vertex="1" parent="1">
       <mxGeometry x="1060" y="390" width="200" height="70" as="geometry" />
     </mxCell>
 
@@ -140,20 +119,9 @@
       <mxGeometry x="860" y="790" width="160" height="60" as="geometry" />
     </mxCell>
 
-    <!-- Splitter B -->
-    <mxCell id="splitB" value="Servo Splitter" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=12;arcSize=10;" vertex="1" parent="1">
-      <mxGeometry x="1080" y="530" width="160" height="50" as="geometry" />
-    </mxCell>
-
-    <!-- Servo Chains B -->
-    <mxCell id="rlB" value="Right Leg Chain&#xa;ID 5→4→3→2→1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;arcSize=10;" vertex="1" parent="1">
-      <mxGeometry x="960" y="660" width="160" height="50" as="geometry" />
-    </mxCell>
-    <mxCell id="llB" value="Left Leg Chain&#xa;ID 10→9→8→7→6" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;arcSize=10;" vertex="1" parent="1">
-      <mxGeometry x="1140" y="660" width="160" height="50" as="geometry" />
-    </mxCell>
-    <mxCell id="hnB" value="Head/Neck Chain&#xa;ID 12→11→13→14" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;arcSize=10;" vertex="1" parent="1">
-      <mxGeometry x="1320" y="660" width="160" height="50" as="geometry" />
+    <!-- Servo Chain B (single bus) -->
+    <mxCell id="chainB" value="Single Servo Bus&#xa;ID 1→2→3→...→14&#xa;(All servos daisy-chained)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;arcSize=10;" vertex="1" parent="1">
+      <mxGeometry x="1060" y="540" width="200" height="60" as="geometry" />
     </mxCell>
 
     <!-- ==================== ARROWS OPTION B ==================== -->
@@ -178,16 +146,7 @@
     <mxCell id="f7" value="I2C" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#9673a6;strokeWidth=2;endArrow=block;startArrow=block;startFill=1;endFill=1;" edge="1" source="mcu" target="imuB" parent="1">
       <mxGeometry relative="1" as="geometry" />
     </mxCell>
-    <mxCell id="f8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#6c8ebf;strokeWidth=2;" edge="1" source="boardB" target="splitB" parent="1">
-      <mxGeometry relative="1" as="geometry" />
-    </mxCell>
-    <mxCell id="f9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#b85450;strokeWidth=2;" edge="1" source="splitB" target="rlB" parent="1">
-      <mxGeometry relative="1" as="geometry" />
-    </mxCell>
-    <mxCell id="f10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#b85450;strokeWidth=2;" edge="1" source="splitB" target="llB" parent="1">
-      <mxGeometry relative="1" as="geometry" />
-    </mxCell>
-    <mxCell id="f11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#b85450;strokeWidth=2;" edge="1" source="splitB" target="hnB" parent="1">
+    <mxCell id="f8" value="TTL Single Bus" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#b85450;strokeWidth=2;" edge="1" source="boardB" target="chainB" parent="1">
       <mxGeometry relative="1" as="geometry" />
     </mxCell>
 
