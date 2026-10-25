@@ -39,7 +39,7 @@
     </mxCell>
 
     <!-- ==================== CUSTOM TTL BOARD ==================== -->
-    <mxCell id="boardA" value="Custom USB-TTL Board&#xa;FT232H + ADM3078E&#xa;(Single TTL Bus)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;fontStyle=1;arcSize=10;" vertex="1" parent="1">
+    <mxCell id="boardA" value="Custom USB-TTL Board&#xa;FT232H + MAX485&#xa;(Single TTL Bus)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;fontStyle=1;arcSize=10;" vertex="1" parent="1">
       <mxGeometry x="280" y="390" width="200" height="70" as="geometry" />
     </mxCell>
 
@@ -105,7 +105,7 @@
     </mxCell>
 
     <!-- TTL Board B -->
-    <mxCell id="boardB" value="Custom USB-TTL Board&#xa;FT232H + ADM3078E&#xa;(Single TTL Bus)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;fontStyle=1;arcSize=10;" vertex="1" parent="1">
+    <mxCell id="boardB" value="Custom USB-TTL Board&#xa;FT232H + MAX485&#xa;(Single TTL Bus)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;fontStyle=1;arcSize=10;" vertex="1" parent="1">
       <mxGeometry x="1060" y="390" width="200" height="70" as="geometry" />
     </mxCell>
 
